@@ -2,26 +2,30 @@
 require_once "config.php";
  
 $nev = $email = $uzenet = "";
-$nev_err = $email_err = $uzenet_err = "";
+$nev_err = $email_err = $uzenet_err = $err = "";
  
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
  
     if (empty(trim($_POST["nev"]))){
-        $nev_err = "Kérlek írd be a neved!";     
+        $nev_err = "Kérlek írd be a neved!";   
+		$err = "Hiba! Kérjük töltsd ki az összes mezőt!";
     } else {
         $nev = trim($_POST["nev"]);
     }
 	
 	if (empty(trim($_POST["email"]))){
         $email_err = "Kérlek írd be az e-mail címed!";
+		$err = "Hiba! Kérjük töltsd ki az összes mezőt!";
     } elseif (!filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL)) {
         $email_err = "Hibás e-mail formátum!";
+		$err = "Hiba! Kérjük töltsd ki az összes mezőt!";
       } else {
         $email = trim($_POST["email"]);
     }
     
     if (empty(trim($_POST["uzenet"]))){
         $uzenet_err = "Kérlek töltsd ki az üzenetet!";     
+		$err = "Hiba! Kérjük töltsd ki az összes mezőt!";
     } else {
         $uzenet = trim($_POST["uzenet"]);
     }
@@ -67,6 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 				<form class="contact2-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 					<span class="contact2-form-title">
 						Kapcsolatfelvétel
+						<div class="error">
+						<a><?php echo $err; ?></a></br>
+						</div>
 					</span>
 					<div class="error">
 					<a><?php echo $nev_err; ?></a></br>
